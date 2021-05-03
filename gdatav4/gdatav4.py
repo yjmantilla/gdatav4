@@ -24,10 +24,15 @@ def mergepoints2D(x,y,v):
     # Sort x and y so duplicate points can be averaged
 
     # Need x,y and z to be column vectors
+
     sz = x.size
     x = x.copy()
     y = y.copy()
     v = v.copy()
+    x = np.reshape(x,(sz),order='F');
+    y = np.reshape(y,(sz),order='F');
+    v = np.reshape(v,(sz),order='F');
+
     myepsx = np.spacing(0.5 * (np.max(x) - np.min(x)))**(1/3);
     myepsy = np.spacing(0.5 * (np.max(y) - np.min(y)))**(1/3);
     # % look for x, y points that are indentical (within a tolerance)
@@ -51,7 +56,6 @@ def mergepoints2D(x,y,v):
         print('MATLAB:griddata:DuplicateDataPoints')
     return x,y,v
 
-
 def gdatav4(x,y,v,xq,yq):
     """
     %GDATAV4 MATLAB 4 GRIDDATA interpolation
@@ -67,28 +71,29 @@ def gdatav4(x,y,v,xq,yq):
     xy = x + 1j*y
     xy = np.squeeze(xy)
     #% Determine distances between points
-    d = np.zeros((xy.shape[0],xy.shape[0]))
-    for i in range(xy.shape[0]):
-        for j in range(xy.shape[0]):
-            d[i,j]=np.abs(xy[i]-xy[j])
+    
+    # d = np.zeros((xy.shape[0],xy.shape[0]))
+    # for i in range(xy.shape[0]):
+    #     for j in range(xy.shape[0]):
+    #         d[i,j]=np.abs(xy[i]-xy[j])
 
-
+    d = np.abs(np.subtract.outer(xy, xy))
     # % Determine weights for interpolation
     g = np.square(d) * (np.log(d)-1) #% Green's function.
     # % Fixup value of Green's function along diagonal
     np.fill_diagonal(g, 0)
     weights = np.linalg.lstsq(g, v)[0]
 
-    (m,n) = (xq.shape[0],yq.shape[0])
-    vq = np.zeros((xq.shape[0],yq.shape[0]));
+    (m,n) = xq.shape
+    vq = np.zeros(xq.shape);
     #xy = np.tranpose(xy);
 
     # % Evaluate at requested points (xq,yq).  Loop to save memory.
     for i in range(m):
         for j in range(n):
-            d = np.abs(xq[i] + 1j*yq[j] - xy);
+            d = np.abs(xq[i,j] + 1j*yq[i,j] - xy);
             g = np.square(d) * (np.log(d)-1);#   % Green's function.
             #% Value of Green's function at zero
-            g[np.where(d)==0] = 0;
+            g[np.where(np.isclose(d,0))] = 0;
             vq[i,j] = (np.expand_dims(g,axis=0) @ np.expand_dims(weights,axis=1))[0][0]
     return xq,yq,vq
