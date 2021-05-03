@@ -9,5 +9,5 @@ xq = linspace(1,10,w*10);
 yq = linspace(1,10,h*10);
 [XQ,YQ] = meshgrid(xq,yq);
 [~,~,vq] = griddata(X,Y,A,XQ,YQ,'v4');
+save('gdatav4_1337.mat','vq');
 heatmap(vq);
-

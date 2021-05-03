@@ -3,7 +3,7 @@ from gdatav4 import gdatav4
 from scipy.io import loadmat
 
 
-def test_gdatav4():
+def test_gdatav4(plot=False):
     np.random.seed(1337)
     A = np.random.random((5,3))
     A = A.T
@@ -18,3 +18,11 @@ def test_gdatav4():
     _,_,vq = gdatav4(X,Y,A,XQ,YQ)
     matlab = loadmat(r'tests\gdatav4_1337.mat')['vq']
     assert np.all(np.isclose(matlab,vq))
+    if plot:
+        import matplotlib.pyplot as plt
+        fig,axes = plt.subplots(1,2)
+        axes[0].imshow(vq)
+        axes[0].set_title('Python')
+        axes[1].imshow(matlab)
+        axes[1].set_title('Matlab')
+        plt.show()
