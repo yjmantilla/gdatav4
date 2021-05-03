@@ -7,3 +7,4 @@ GDATAV4 MATLAB 4 GRIDDATA interpolation
 
 Reference:  David T. Sandwell, Biharmonic spline interpolation of GEOS-3 and SEASAT altimeter data, Geophysical Research Letters, 2, 139-142 1987.  Describes interpolation using value or gradient of value in any dimension.
 
+![image](https://user-images.githubusercontent.com/36543115/116847492-43802f00-abb0-11eb-8db4-20dade0b8dc3.png)
