@@ -1,7 +1,7 @@
 # gdatav4
 
 This repository is a translation of the biharmonic spline interpolation code of matlab.
-Also has a rough translation of the mergesimpts (Merge Similar Points) built-in matlab function. It was reverse-engineered so I wouldn't know if it is an exact match.
+Also has a rough translation of the mergesimpts (Merge Similar Points) built-in matlab function. Merge Similar Points was reverse-engineered so I wouldn't know if it is an exact match.
 
 GDATAV4 MATLAB 4 GRIDDATA interpolation
 
